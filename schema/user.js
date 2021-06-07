@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+
 const userSchema = mongoose.Schema({
     name: { type: String, required: [true, 'Please add a name'] },
     email: {
@@ -23,5 +24,7 @@ userSchema.methods.getSignedJwtToken = function () {
         expiresIn: process.env.JWT_EXPIRE,
     });
 };
+
 const userModel = mongoose.model("user", userSchema);
+
 module.exports = userModel;

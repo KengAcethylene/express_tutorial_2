@@ -8,7 +8,7 @@ const authHandler = require('./shared/auth');
 const cookieParser = require('cookie-parser');
 const { connectDB, disconnectDB } = require('./utils/dbConnect');
 const authRoute = require('./controller/auth');
-const withauthRoute = require('./controller/with-auth');
+const withauthRoute = require('./controller/with_auth');
 
 const main = async () => {
     dotenv.config({ path: path.join(__dirname, ".env") });

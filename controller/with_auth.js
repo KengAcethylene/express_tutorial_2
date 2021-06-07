@@ -24,15 +24,11 @@ router.put('/todos/:id', async (req, res, next) => {
         const todo = await todoModel.findByIdAndUpdate(req.params.id, { $set: { title } }, { new: true }).orFail();
         res.status(200).json({ success: true, data: todo });
     }
-
-
 });
 
 router.delete('/todos/:id', async (req, res) => {
-
-    const todo = await TodoModel.findByIdAndRemove(req.params.id).orFail();
+    await TodoModel.findByIdAndRemove(req.params.id).orFail();
     res.status(200).json({ success: true, data: {} });
-
 });
 
 module.exports = router;
