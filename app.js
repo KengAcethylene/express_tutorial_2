@@ -6,7 +6,6 @@ const morgan = require('morgan');
 
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./shared/middleware/errorHandler');
-const authHandler = require('./shared/middleware/auth');
 const dbMiddleware = require('./shared/middleware/dbMiddleware');
 
 const { connectDB, disconnectDB } = require('./db/dbConnect');
