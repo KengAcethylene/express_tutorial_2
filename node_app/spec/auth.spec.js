@@ -1,8 +1,8 @@
-const authRoute = require("..\controller\auth");
+const authRoute = require("../controller/auth");
 
 const request = require('supertest');
-const App = require('..\..\shared\utils\dbTest');
-const Users = require('..\data\user').users;
+const App = require('../../shared/utils/dbTest');
+const Users = require('../data/user').users;
 
 jest.setTimeout(20000);
 describe("auth", () => {
