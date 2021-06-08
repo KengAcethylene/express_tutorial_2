@@ -3,16 +3,30 @@
 **.env Template**
 
 ```
-MONGO_URL=[URL]
-JWT_SECRET=[SECRET]
+MONGO_URL=
+MONGO_DB_NAME=
+
+JWT_SECRET=
 JWT_EXPIRE=1800s
 SALT=[SALT (Number)]
+ENV=
 ```
 
-**Dev Environment command**
+**Dev start**
+
 ```sh
 yarn dev
 ```
 
+**Prod command**
 
+```sh
+yarn start
+yarn stop
+```
 
+**Test command**
+
+```sh
+yarn test
+```
