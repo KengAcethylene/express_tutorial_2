@@ -2,12 +2,11 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL, {
+        const con = await mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
             useCreateIndex: true,
             useFindAndModify: false,
             useUnifiedTopology: true,
-            autoIndex: false,
         });
     } catch (err) {
         throw new Error(err);

@@ -1,25 +1,26 @@
-require('../config_env');
+require('../../config_env');
 require('express-async-errors');
-
 const mongoose = require('mongoose');
 const { ValidationError, CastError } = mongoose.Error;
 const ModelGenerator = require('./modelGenerator');
 const initDbData = require('../mocks/init_db_data');
 const express = require('express');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const errorHandler = require('../middlewares/error_handler');
+const errorHandler = require('../middleware/errorHandler');
 const _ = require('lodash');
-const { connectDB, disconnectDB } = require('../../db/connect');
-
+const { connectDB, disconnectDB } = require('../../db/dbConnect');
+const { db } = require('../middleware/dbMiddleware');
 module.exports = (controller) =>
     express()
-        .use(bodyParser.json())
-        .use(bodyParser.urlencoded({ extended: true }))
+        .use(express.json())
+        .use(express.urlencoded({ extended: true }))
         .use(cookieParser())
         .use(mockDBMiddleware())
         .use(controller)
-        .use(errorHandler);
+        .use(errorHandler)
+        .use((err, req, res, next) => {
+            res.status(500).json({ err: err.message, tor: true });
+        });
 
 // setup mockDB to mock data that will be used to test
 let mockDb = {};
@@ -33,12 +34,12 @@ module.exports.mockDb = (collection, data) => {
 
 const mockDBMiddleware = () => {
     return async (req, res, next) => {
-        req.db = await prepareDb(req.db);
+        req.db = await prepareDb();
         next();
     };
 };
 
-const prepareDb = async (db) => {
+const prepareDb = async () => {
     for (var x in mockDb) {
         if (!db[x]) throw new Error('incorrect mockDb name');
         try {

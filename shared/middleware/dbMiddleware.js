@@ -1,9 +1,13 @@
-const Todo = require('../../db/schema/todo');
-const User = require('../../db/schema/user');
+const glob = require('glob');
+const path = require('path');
 
-const dbMiddleware = (req, res, next) => {
-    req.db = { User: User, Todo: Todo };
+const db = {};
+const files = glob.sync(path.join(__dirname, '/../../db/schema/*.js'));
+for (var file of files) db[path.basename(file, '.js')] = require(file);
+
+module.exports = (req, res, next) => {
+    req.db = db;
     next();
 };
 
-module.exports = dbMiddleware;
+module.exports.db = db;

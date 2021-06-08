@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
         select: false,
     },
     createdAt: { type: Date, default: new Date() }
-}, { collection: "user" });
+}, { collection: "User" });
 
 userSchema.methods.getSignedJwtToken = function () {
     return jwt.sign({ user_id: this._id }, process.env.JWT_SECRET, {
@@ -25,6 +25,6 @@ userSchema.methods.getSignedJwtToken = function () {
     });
 };
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("User", userSchema);
 
 module.exports = userModel;

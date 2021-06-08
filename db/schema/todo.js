@@ -6,7 +6,7 @@ const TodoSchema = new mongoose.Schema(
         title: { type: String, required: [true, "Please add a title"] },
         createdAt: { type: Date, default: Date.now },
     },
-    { collection: "todo" }
+    { collection: "Todo" }
 );
 
 TodoSchema.pre("save", async function (next) {
@@ -17,5 +17,5 @@ TodoSchema.pre("save", async function (next) {
     this.order = maxTodo[0].order + 1;
     next();
 });
-const TodoModel = mongoose.model("todo", TodoSchema);
+const TodoModel = mongoose.model("Todo", TodoSchema);
 module.exports = TodoModel;
