@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../db/schema/User');
 const tokenHandler = async (req, res, next) => {
     let token;
 
@@ -17,7 +16,7 @@ const tokenHandler = async (req, res, next) => {
     try {
         const decode = await jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await User.findById(decode.user_id);
+        req.user = await req.db.User.findById(decode.user_id);
         next();
     } catch (e) {
         res.status(401).json({ error: 'token is not valid', data: {} });
