@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const userModel = require('../schema/user');
 const bcrypt = require('bcrypt');
 const authHandler = require('../shared/auth');
 
@@ -11,11 +10,11 @@ router.post("/register", async (req, res, next) => {
         if (!name || !email || !password) return res.status(400).json({ error: "Please add [name] [email] [password] in body", data: {} });
 
         //* Check exist user
-        const checkEmail = await userModel.findOne({ email }).select('_id');
+        const checkEmail = await req.db.User.findOne({ email }).select('_id');
         if (checkEmail) return res.status(400).json({ error: "email is already used.", data: {} });
 
         //* Create User
-        const user = await userModel.create({ name, email, password: await bcrypt.hash(password, parseInt(process.env.SALT)) });
+        const user = await req.db.User.create({ name, email, password: await bcrypt.hash(password, parseInt(process.env.SALT)) });
         if (!user) return res.status(400).json({ error: 'cannot create user', data: {} });
 
         const token = user.getSignedJwtToken();
@@ -33,7 +32,7 @@ router.post("/login", async (req, res) => {
     if (!email || !password) return res.status(400).json({ error: "Please add [email] [password] in body", data: {} });
 
     //* Check user existed
-    const user = await userModel.findOne({ email }).select('+password');
+    const user = await req.db.User.findOne({ email }).select('+password');
     if (!user) return res.status(401).json({ error: 'invalid email or password', data: {} });
 
     //* Check password match

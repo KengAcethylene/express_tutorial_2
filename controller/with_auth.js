@@ -1,33 +1,31 @@
 const router = require('express').Router();
-const TodoModel = require('../schema/todo');
-const todoModel = require('../schema/todo');
 
-router.post('/todos', async (req, res, next) => {
+router.post('/todos', async (req, res) => {
     const { title } = req.body;
 
     //* Create todo
-    const todo = await todoModel.create({ title });
+    const todo = await req.db.Todo.create({ title });
     res.status(201).json({ success: true, data: todo });
 });
 
-router.put('/todos/:id', async (req, res, next) => {
+router.put('/todos/:id', async (req, res) => {
     const { title } = req.body;
 
     //* Dont have title === dont change todo
     if (!title) {
-        const todo = await todoModel.findById(req.params.id).orFail();
+        const todo = await req.db.Todo.findById(req.params.id).orFail();
         res.status(200).json({ success: true, data: todo });
     }
 
     //* Have title === change todo
     else {
-        const todo = await todoModel.findByIdAndUpdate(req.params.id, { $set: { title } }, { new: true }).orFail();
+        const todo = await req.db.Todo.findByIdAndUpdate(req.params.id, { $set: { title } }, { new: true }).orFail();
         res.status(200).json({ success: true, data: todo });
     }
 });
 
 router.delete('/todos/:id', async (req, res) => {
-    await TodoModel.findByIdAndRemove(req.params.id).orFail();
+    await req.db.Todo.findByIdAndRemove(req.params.id).orFail();
     res.status(200).json({ success: true, data: {} });
 });
 

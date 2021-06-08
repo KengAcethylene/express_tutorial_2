@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const { connectDB, disconnectDB } = require('./utils/dbConnect');
 const authRoute = require('./controller/auth');
 const withauthRoute = require('./controller/with_auth');
+const dbMiddleware = require('./utils/dbMiddleware');
 
 const main = async () => {
     dotenv.config({ path: path.join(__dirname, ".env") });
@@ -29,6 +30,7 @@ const main = async () => {
     if (process.env.ENV === 'dev') {
         app.use(morgan("dev"));
     }
+    app.use(dbMiddleware);
 
     app.get("/check", (req, res) => {
         res.send("Server OK!!!");
