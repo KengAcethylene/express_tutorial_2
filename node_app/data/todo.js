@@ -1,6 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
-
-exports.todo = [
+const todos = [
     {
         _id: ObjectId('60a77ed40df917452759a018'),
         order: 1,
@@ -14,3 +13,4 @@ exports.todo = [
         title: 'Day 2 work!',
     },
 ];
+module.exports = todos;

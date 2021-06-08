@@ -12,7 +12,8 @@ const { connectDB, disconnectDB } = require('./db/dbConnect');
 
 const authRoute = require('./node_app/controller/auth');
 const withauthRoute = require('./node_app/controller/with_auth');
-
+const noauthRoute = require('./node_app/controller/no_auth');
+const echoRoute = require('./node_app/controller/echo');
 const main = async () => {
 
     //* connect database
@@ -28,7 +29,7 @@ const main = async () => {
     app.use(cookieParser());
 
     if (process.env.ENV === 'dev') {
-        app.use(morgan("dev"));
+        app.use(morgan('common'));
     }
     app.use(dbMiddleware);
 
@@ -37,7 +38,9 @@ const main = async () => {
     });
 
     //* Route
+    app.use("/app/echo", echoRoute);
     app.use("/app/auth", authRoute);
+    app.use("/app/no_auth", noauthRoute);
     app.use("/app/with_auth", withauthRoute);
 
     //* 404 Not Found

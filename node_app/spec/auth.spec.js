@@ -2,10 +2,10 @@ const authRoute = require("../controller/auth");
 
 const request = require('supertest');
 const App = require('../../shared/utils/dbTest');
-const Users = require('../data/user').users;
+const Users = require('../data/user');
 
 jest.setTimeout(20000);
-describe("auth", () => {
+describe("/app/auth", () => {
     describe("POST /register", () => {
         const url = '/register';
         it("register success", async () => {
