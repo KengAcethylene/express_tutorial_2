@@ -1,6 +1,6 @@
 const router = require('express').Router();
-
-router.post('/todos', async (req, res) => {
+const authHandler = require('../../shared/middleware/auth');
+router.post('/todos', authHandler, async (req, res) => {
     const { title } = req.body;
 
     //* Create todo
@@ -8,7 +8,7 @@ router.post('/todos', async (req, res) => {
     res.status(201).json({ success: true, data: todo });
 });
 
-router.put('/todos/:id', async (req, res) => {
+router.put('/todos/:id', authHandler, async (req, res) => {
     const { title } = req.body;
 
     //* Dont have title === dont change todo
@@ -24,7 +24,7 @@ router.put('/todos/:id', async (req, res) => {
     }
 });
 
-router.delete('/todos/:id', async (req, res) => {
+router.delete('/todos/:id', authHandler, async (req, res) => {
     await req.db.Todo.findByIdAndRemove(req.params.id).orFail();
     res.status(200).json({ success: true, data: {} });
 });

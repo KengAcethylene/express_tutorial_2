@@ -1,19 +1,20 @@
 require('express-async-errors');
-const path = require('path');
+require('./config_env');
+
 const express = require('express');
-const dotenv = require('dotenv');
 const morgan = require('morgan');
-const errorHandler = require('./shared/errorHandler');
-const authHandler = require('./shared/auth');
+
 const cookieParser = require('cookie-parser');
-const { connectDB, disconnectDB } = require('./utils/dbConnect');
-const authRoute = require('./controller/auth');
-const withauthRoute = require('./controller/with_auth');
-const dbMiddleware = require('./utils/dbMiddleware');
+const errorHandler = require('./shared/middleware/errorHandler');
+const authHandler = require('./shared/middleware/auth');
+const dbMiddleware = require('./shared/middleware/dbMiddleware');
+
+const { connectDB, disconnectDB } = require('./db/dbConnect');
+
+const authRoute = require('./node_app/controller/auth');
+const withauthRoute = require('./node_app/controller/with_auth');
 
 const main = async () => {
-    dotenv.config({ path: path.join(__dirname, ".env") });
-    dotenv.config({ path: path.join(__dirname, ".env.default") });
 
     //* connect database
     await connectDB();
@@ -38,7 +39,7 @@ const main = async () => {
 
     //* Route
     app.use("/app/auth", authRoute);
-    app.use("/app/with_auth", authHandler, withauthRoute);
+    app.use("/app/with_auth", withauthRoute);
 
     //* 404 Not Found
     app.use((req, res) => {

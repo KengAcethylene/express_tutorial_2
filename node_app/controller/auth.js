@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const authHandler = require('../shared/auth');
+const authHandler = require('../../shared/middleware/auth');
 
 router.post("/register", async (req, res, next) => {
     try {
