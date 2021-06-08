@@ -1,19 +1,27 @@
 const jwt = require('jsonwebtoken');
-const userModel = require('../../db/schema/User');
-const authenticateToken = async (req, res, next) => {
+const User = require('../../db/schema/User');
+const tokenHandler = async (req, res, next) => {
+    let token;
+
+    const authHeader = req.headers['authorization'];
+
+    if (authHeader && authHeader.startsWith('Bearer')) {
+        token = authHeader.slice(7, authHeader.length);
+    } else if (req.cookies.token) {
+        token = req.cookies.token;
+    }
+
+    if (!token)
+        return res.status(401).json({ error: 'You are unauthorize to use this route', data: {} });
+
     try {
-        const authHeader = req.headers['cookie'];
-        const token = authHeader && authHeader.split('=')[1];
-        if (token == null) return res.status(401).json({ error: "You are unauthorize to use this route", data: {} });
+        const decode = await jwt.verify(token, process.env.JWT_SECRET);
 
-        const _id = await jwt.verify(token, process.env.JWT_SECRET).user_id;
-        const user = await userModel.findOne({ _id });
-        req.user = user;
-
+        req.user = await User.findById(decode.user_id);
         next();
-    } catch (err) {
-        return res.status(401).json({ error: 'token is expired', data: {} });
+    } catch (e) {
+        res.status(401).json({ error: 'token is not valid', data: {} });
     }
 };
 
-module.exports = authenticateToken;
+module.exports = tokenHandler;

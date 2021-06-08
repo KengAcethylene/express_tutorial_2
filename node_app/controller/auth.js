@@ -11,7 +11,7 @@ router.post("/register", async (req, res, next) => {
 
         //* Check exist user
         const checkEmail = await req.db.User.findOne({ email }).select('_id');
-        if (checkEmail) return res.status(400).json({ error: "email is already used.", data: {} });
+        if (checkEmail) return res.status(400).json({ error: "email is already used", data: {} });
 
         //* Create User
         const user = await req.db.User.create({ name, email, password: await bcrypt.hash(password, parseInt(process.env.SALT)) });

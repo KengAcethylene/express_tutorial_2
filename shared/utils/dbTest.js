@@ -72,5 +72,6 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+    await modelGenerator.cleanUp().catch((a) => { });
     await disconnectDB();
 });

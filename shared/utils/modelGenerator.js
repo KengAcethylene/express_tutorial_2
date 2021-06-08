@@ -33,6 +33,12 @@ class ModelGenerator {
         if (data) await model.insertMany(data);
         return model;
     }
+
+    async cleanUp() {
+        await Promise.allSettled(
+            this.createdModels.map(a => this.connection.dropCollection(a))
+        );
+    }
 }
 
 module.exports = ModelGenerator;
