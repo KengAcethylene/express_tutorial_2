@@ -31,6 +31,7 @@ const main = async () => {
     if (process.env.ENV === 'dev') {
         app.use(morgan('common'));
     }
+
     app.use(dbMiddleware);
 
     app.get("/check", (req, res) => {
