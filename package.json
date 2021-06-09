@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest auth --verbose",
+    "test": "jest user --verbose",
     "start": "pm2 start app.js",
     "stop": "pm2 delete app.js",
     "dev": "nodemon app.js"
